@@ -17,6 +17,9 @@ int main(void)
 	register_node(n1);
 	register_node(n2);
 
+	printf("n1's data: %s\n", server_get_data(n1));
+	printf("n2's data: %s\n", server_get_data(n2));
+
 	free_node(n1);
 	free_node(n2);
 	free_server();

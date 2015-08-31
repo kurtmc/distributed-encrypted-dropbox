@@ -12,9 +12,16 @@ void register_node(struct Node *n)
 	nodes[nodes_length - 1] = n;
 }
 
-char *get_data(struct Node *n)
+char *server_get_data(struct Node *n)
 {
-	return 0;
+	for (int i = 0; i < nodes_length; i++) {
+		for (int j = 0; j < nodes[i]->data_array_length; j++) {
+			if (nodes[i]->data_id[j] == n->id) {
+				return nodes[i]->data_array[j];
+			}
+		}
+	}
+	return NULL;
 }
 
 void free_server() {

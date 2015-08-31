@@ -17,4 +17,6 @@ void append_data(struct Node *n, int id, char *data);
 
 void print_node(struct Node *n);
 
+char *get_data(struct Node *n, int id);
+
 #endif

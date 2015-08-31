@@ -69,7 +69,6 @@ void append_data(struct Node *n, int id, char *data)
 {
 	int index = get_index_of_id(n, id);
 	if (index == -1) {
-		printf("No id found\n");
 		index = allocate_for_new_data(n, id);
 	}
 
@@ -88,6 +87,16 @@ void append_data(struct Node *n, int id, char *data)
 	for (int i = 0; i < data_length	+ 1; i++) {
 		n->data_array[index][old_length + i] = data[i];
 	}
+}
+
+char *get_data(struct Node *n, int id)
+{
+	int index = get_index_of_id(n, id);
+	if (index == -1) {
+		return NULL;
+	}
+
+	return n->data_array[index];
 }
 
 void print_node(struct Node *n)

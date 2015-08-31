@@ -2,22 +2,19 @@
 #define NODE_H
 
 struct Node {
-	char *data;
-	int data_size;
-	int *addresses;
-	int addess_length;
+	char **data_array;
+	int *data_id;
+	int *data_length;
+	int data_array_length;
+	int id;
 };
 
 struct Node *new_node();
 
 void free_node(struct Node *n);
 
-void append_data(struct Node *n, char *d);
+void append_data(struct Node *n, int id, char *data);
 
 void print_node(struct Node *n);
-
-void add_address(struct Node *n, int address);
-
-int get_address(struct Node *n, int i);
 
 #endif

@@ -8,6 +8,7 @@ int main(void)
 {
 	struct Node *n1;
 	struct Node *n2;
+
 	n1 = new_node(1);
 	n2 = new_node(2);
 
@@ -23,6 +24,6 @@ int main(void)
 	free_node(n1);
 	free_node(n2);
 	free_server();
-	
+
 	return 0;
 }

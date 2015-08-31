@@ -5,7 +5,8 @@
 
 struct Node *new_node(int id)
 {
-	struct Node *n = (struct Node*) malloc(sizeof(*n));
+	struct Node *n = (struct Node *) malloc(sizeof(*n));
+
 	n->data_array = NULL;
 	n->data_id = NULL;
 	n->data_length = NULL;
@@ -23,13 +24,13 @@ void free_node(struct Node *n)
 	}
 
 
-	if(n->data_id != NULL)
+	if (n->data_id != NULL)
 		free(n->data_id);
 
 	if (n->data_length != NULL)
 		free(n->data_length);
 
-	if (n != NULL)	
+	if (n != NULL)
 		free(n);
 }
 
@@ -47,14 +48,18 @@ int get_index_of_id(struct Node *n, int id)
 int allocate_for_new_data(struct Node *n, int id)
 {
 	int index = n->data_array_length;
+
 	n->data_array_length++;
-	if (n->data_array_length == 1) { /* allocate memory if none has been allocated */
-		n->data_array = malloc(1 * sizeof(char*));
+	/* allocate memory if none has been allocated */
+	if (n->data_array_length == 1) {
+		n->data_array = malloc(1 * sizeof(char *));
 		n->data_id = malloc(1 * sizeof(int));
 		n->data_length = malloc(1 * sizeof(int));
 	} else { /* reallocte if memory already in use */
-		n->data_array = realloc(n->data_array, n->data_array_length * sizeof(char*));
-		n->data_id = realloc(n->data_id, n->data_array_length * sizeof(int));
+		n->data_array = realloc(n->data_array, n->data_array_length *
+				sizeof(char *));
+		n->data_id = realloc(n->data_id, n->data_array_length *
+				sizeof(int));
 		n->data_length = malloc(n->data_array_length * sizeof(int));
 	}
 
@@ -68,9 +73,9 @@ int allocate_for_new_data(struct Node *n, int id)
 void append_data(struct Node *n, int id, char *data)
 {
 	int index = get_index_of_id(n, id);
-	if (index == -1) {
+
+	if (index == -1)
 		index = allocate_for_new_data(n, id);
-	}
 
 	int old_length = n->data_length[index];
 	int new_length = old_length + strlen(data);
@@ -79,22 +84,23 @@ void append_data(struct Node *n, int id, char *data)
 		new_length++; /* need to increment to include '\0' */
 		n->data_array[index] = malloc(new_length * sizeof(char));
 	} else {
-		n->data_array[index] = realloc(n->data_array[index], new_length * sizeof(char));
+		n->data_array[index] = realloc(n->data_array[index], new_length
+				* sizeof(char));
 	}
 	n->data_length[index] = new_length;
 
 	int data_length = strlen(data);
-	for (int i = 0; i < data_length	+ 1; i++) {
+
+	for (int i = 0; i < data_length	+ 1; i++)
 		n->data_array[index][old_length + i] = data[i];
-	}
 }
 
 char *get_data(struct Node *n, int id)
 {
 	int index = get_index_of_id(n, id);
-	if (index == -1) {
+
+	if (index == -1)
 		return NULL;
-	}
 
 	return n->data_array[index];
 }

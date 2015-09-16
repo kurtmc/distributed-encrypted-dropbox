@@ -13,11 +13,9 @@
 #include <openssl/evp.h>
 #include <openssl/aes.h>
 
+#include "openssl_aes.h"
 int aes_init(unsigned char *key_data, int key_data_len, unsigned char *salt, EVP_CIPHER_CTX *e_ctx, 
 		EVP_CIPHER_CTX *d_ctx);
-unsigned char *encrypt(char *text, EVP_CIPHER_CTX *en, int *length);
-char *decrypt(unsigned char *cypher_text, EVP_CIPHER_CTX *de, int *length);
-int generate_keys(EVP_CIPHER_CTX *de, EVP_CIPHER_CTX *en);
 int generate_keys(EVP_CIPHER_CTX *de, EVP_CIPHER_CTX *en)
 {
 	unsigned char *key_data;
@@ -111,26 +109,15 @@ unsigned char *aes_decrypt(EVP_CIPHER_CTX *e, unsigned char *ciphertext, int *le
 	return plaintext;
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
 	/* "opaque" encryption, decryption ctx structures that libcrypto uses to record
 	   status of enc/dec operations */
 	EVP_CIPHER_CTX en, de;
 
-	/* 8 bytes to salt the key_data during key generation. This is an example of
-	   compiled in salt. We just read the bit pattern created by these two 4 byte 
-	   integers on the stack as 64 bits of contigous salt material - 
-	   ofcourse this only works if sizeof(int) >= 4 */
-	unsigned int salt[] = {12345, 54321};
-	unsigned char *key_data;
-	int key_data_len, i;
 	char *input[] = {"a", "abcd", "this is a test", "this is a bigger test", 
 		"\nWho are you ?\nI am the 'Doctor'.\n'Doctor' who ?\nPrecisely!",
 		NULL};
-
-	/* the key_data is read from the argument list */
-	key_data = (unsigned char *)argv[1];
-	key_data_len = strlen(argv[1]);
 
 	/* gen key and iv. init the cipher ctx object */
 	if (generate_keys(&de, &en)) {
@@ -138,6 +125,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	int i;
 	/* encrypt and decrypt each input string and compare with the original */
 	for (i = 0; input[i]; i++) {
 		char *plaintext;
